@@ -13,12 +13,13 @@ model = tf.keras.models.load_model('model/trained_model')
 class_names = ['correct', 'wrong']
 
 
+
 img = keras.preprocessing.image.load_img(
-    './dzgn1.jpeg', target_size=(180, 180)
+    'test_images/dzgn1.jpeg', target_size=(180, 180)
 )
-plt.imshow(img)
-plt.title('Training and Validation Loss')
-plt.show()
+#plt.imshow(img)
+#plt.title('Training and Validation Loss')
+#plt.show()
 
 img_array = keras.preprocessing.image.img_to_array(img)
 img_array = tf.expand_dims(img_array, 0) # Create a batch

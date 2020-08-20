@@ -11,8 +11,8 @@ from tensorflow.keras.models import Sequential
 import pathlib
 data_dir = pathlib.Path('dataset/')
 batch_size = 32
-img_height = 180
-img_width = 180
+img_width = 640
+img_height = 480
 
 
 train_ds = tf.keras.preprocessing.image_dataset_from_directory(
@@ -46,7 +46,7 @@ first_image = image_batch[0]
 print(np.min(first_image), np.max(first_image))
 
 
-num_classes = 2
+num_classes = 5
 data_augmentation = keras.Sequential(
     [
         layers.experimental.preprocessing.RandomFlip("horizontal",
@@ -57,6 +57,7 @@ data_augmentation = keras.Sequential(
         layers.experimental.preprocessing.RandomZoom(0.1),
     ]
 )
+
 model = Sequential([
     data_augmentation,
     layers.experimental.preprocessing.Rescaling(1./255),
@@ -107,3 +108,5 @@ plt.title('Training and Validation Loss')
 plt.show()
 
 model.save('model/trained_model')
+
+exit()
