@@ -9,7 +9,7 @@ from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 
 import pathlib
-data_dir = pathlib.Path('/Users/yigitcan/.keras/datasets/covisart')
+data_dir = pathlib.Path('datasets/covisart')
 batch_size = 32
 img_height = 180
 img_width = 180
