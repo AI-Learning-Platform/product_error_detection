@@ -45,9 +45,14 @@ first_image = image_batch[0]
 # Notice the pixels values are now in `[0,1]`.
 print(np.min(first_image), np.max(first_image))
 
+def resize_and_rescale(image, label):
+    image = tf.cast(image, tf.float32)
+    image = tf.image.resize(image, [img_height, img_width])
+    image = (image / 255.0)
+    return image, label
 
 num_classes = 5
-data_augmentation = keras.Sequential(
+data_augmentation = tf.keras.Sequential(
     [
         layers.experimental.preprocessing.RandomFlip("horizontal",
                                                      input_shape=(img_height,
@@ -58,7 +63,7 @@ data_augmentation = keras.Sequential(
     ]
 )
 
-model = Sequential([
+model = tf.keras.Sequential([
     data_augmentation,
     layers.experimental.preprocessing.Rescaling(1./255),
     layers.Conv2D(16, 3, padding='same', activation='relu'),
@@ -108,5 +113,3 @@ plt.title('Training and Validation Loss')
 plt.show()
 
 model.save('model/trained_model')
-
-exit()

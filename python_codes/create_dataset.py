@@ -1,5 +1,10 @@
 import cv2
+import tensorflow as tf
+import matplotlib.pyplot as plt
+
 # define a video capture object
+from pandas import np
+
 vid = cv2.VideoCapture(0)
 cameraName = vid.getBackendName()
 
@@ -20,7 +25,8 @@ while(True):
     img_counter += 1
     # Display the resulting frame
     if (img_counter % 5) == 0:
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        #gray = tf.image.rgb_to_grayscale(frame)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         cv2.imwrite(img_name, gray)
         cv2.imshow('frame', gray)
 
@@ -33,3 +39,4 @@ while(True):
 vid.release()
 # Destroy all the windows
 cv2.destroyAllWindows()
+

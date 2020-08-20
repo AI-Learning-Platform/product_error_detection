@@ -18,7 +18,23 @@ img_height = 480
 vid.set(cv2.CAP_PROP_FRAME_WIDTH, img_width)
 vid.set(cv2.CAP_PROP_FRAME_HEIGHT, img_height)
 model = tf.keras.models.load_model('model/trained_model')
-class_names = ['correct', 'wrong']
+class_names = ['dorgu', 'yanlis']
+
+
+# font
+font = cv2.FONT_HERSHEY_SIMPLEX
+
+# org
+org = (50, 50)
+
+# fontScale
+fontScale = 1
+
+# Blue color in BGR
+color = (255, 0, 0)
+
+# Line thickness of 2 px
+thickness = 2
 
 while(True):
 
@@ -27,9 +43,9 @@ while(True):
     vid.set(cv2.CAP_PROP_EXPOSURE, -4)
     ret, frame = vid.read()
 
-    # Display the resulting frame
-    cv2.imshow('frame', frame)
     cv2.imwrite("caputer.jpg", frame)
+
+
     # the 'q' button is set as the
     # quitting button you may use any
     # desired button of your choice
@@ -49,6 +65,10 @@ while(True):
         "Resim {} gözüküyor. {:.2f} ihtimalle."
             .format(class_names[np.argmax(score)], 100 * np.max(score))
     )
+    # Display the resulting frame
+    cv2.putText(frame, "{} : {:.2f} %.".format(class_names[np.argmax(score)], 100 * np.max(score)), org, font, fontScale, color, thickness, cv2.LINE_AA)
+    cv2.imshow('frame', frame)
+
 # After the loop release the cap object
 vid.release()
 # Destroy all the windows
