@@ -1,14 +1,10 @@
+import pathlib
+
 import matplotlib.pyplot as plt
 import numpy as np
-import os
-import PIL
 import tensorflow as tf
-
-from tensorflow import keras
 from tensorflow.keras import layers
-from tensorflow.keras.models import Sequential
 
-import pathlib
 data_dir = pathlib.Path('dataset/')
 batch_size = 32
 img_width = 640
@@ -17,7 +13,7 @@ img_height = 480
 
 train_ds = tf.keras.preprocessing.image_dataset_from_directory(
     data_dir,
-    validation_split=0.2,
+    validation_split=0.6,
     subset="training",
     seed=123,
     image_size=(img_height, img_width),
@@ -25,7 +21,7 @@ train_ds = tf.keras.preprocessing.image_dataset_from_directory(
 
 val_ds = tf.keras.preprocessing.image_dataset_from_directory(
     data_dir,
-    validation_split=0.2,
+    validation_split=0.6,
     subset="validation",
     seed=123,
     image_size=(img_height, img_width),
@@ -42,22 +38,15 @@ normalization_layer = layers.experimental.preprocessing.Rescaling(1./255)
 normalized_ds = train_ds.map(lambda x, y: (normalization_layer(x), y))
 image_batch, labels_batch = next(iter(normalized_ds))
 first_image = image_batch[0]
+
 # Notice the pixels values are now in `[0,1]`.
 print(np.min(first_image), np.max(first_image))
 
-def resize_and_rescale(image, label):
-    image = tf.cast(image, tf.float32)
-    image = tf.image.resize(image, [img_height, img_width])
-    image = (image / 255.0)
-    return image, label
-
 num_classes = 5
+
 data_augmentation = tf.keras.Sequential(
     [
-        layers.experimental.preprocessing.RandomFlip("horizontal",
-                                                     input_shape=(img_height,
-                                                                  img_width,
-                                                                  3)),
+        layers.experimental.preprocessing.RandomFlip("horizontal", input_shape=(img_height, img_width, 3)),
         layers.experimental.preprocessing.RandomRotation(0.1),
         layers.experimental.preprocessing.RandomZoom(0.1),
     ]
@@ -82,7 +71,7 @@ model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
-epochs = 14
+epochs = 12
 
 history = model.fit(
     train_ds,

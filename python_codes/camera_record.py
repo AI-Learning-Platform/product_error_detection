@@ -42,19 +42,15 @@ while(True):
     # by frame
     vid.set(cv2.CAP_PROP_EXPOSURE, -4)
     ret, frame = vid.read()
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    cv2.imwrite("caputer.jpg", gray)
 
-    cv2.imwrite("caputer.jpg", frame)
-
-
-    # the 'q' button is set as the
-    # quitting button you may use any
-    # desired button of your choice
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-    img = keras.preprocessing.image.load_img(
+    img = tf.keras.preprocessing.image.load_img(
         'caputer.jpg', target_size=(img_width, img_height)
     )
-    img_array = keras.preprocessing.image.img_to_array(img)
+    img_array = tf.keras.preprocessing.image.img_to_array(img)
     img_array = tf.expand_dims(img_array, 0) # Create a batch
 
     predictions = model.predict(img_array)
@@ -66,8 +62,8 @@ while(True):
             .format(class_names[np.argmax(score)], 100 * np.max(score))
     )
     # Display the resulting frame
-    cv2.putText(frame, "{} : {:.2f} %.".format(class_names[np.argmax(score)], 100 * np.max(score)), org, font, fontScale, color, thickness, cv2.LINE_AA)
-    cv2.imshow('frame', frame)
+    cv2.putText(gray, "{} : {:.2f} %.".format(class_names[np.argmax(score)], 100 * np.max(score)), org, font, fontScale, color, thickness, cv2.LINE_AA)
+    cv2.imshow('frame', gray)
 
 # After the loop release the cap object
 vid.release()

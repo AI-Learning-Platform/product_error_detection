@@ -22,13 +22,13 @@ while(True):
     vid.set(cv2.CAP_PROP_EXPOSURE, -4)
     ret, frame = vid.read()
     img_name = "dataset/raw/dataset_{}.jpg".format(img_counter)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     img_counter += 1
     # Display the resulting frame
-    if (img_counter % 5) == 0:
+    if (img_counter % 3) == 0:
         #gray = tf.image.rgb_to_grayscale(frame)
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         cv2.imwrite(img_name, gray)
-        cv2.imshow('frame', gray)
+    cv2.imshow('frame', gray)
 
 # the 'q' button is set as the
     # quitting button you may use any
